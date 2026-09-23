@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Querida Kiara Vera.</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --coffee-dark:#2b1c14;
+    --coffee:#4a2f22;
+    --cream:#f4e9dc;
+    --blush:#d99a86;
+    --gold:#c9a15a;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  html,body{height:100%;margin:0;}
+  body{
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(201,161,90,0.10), transparent 55%),
+      var(--coffee-dark);
+    color:var(--cream);
+    font-family:'Jost',sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100%;
+    padding:32px 20px;
+    position:relative;
+    overflow-x:hidden;
+  }
+  .lilies{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    pointer-events:none;
+  }
+  .screens{
+    max-width:440px;
+    width:100%;
+    position:relative;
+    z-index:1;
+  }
+  .screen{
+    display:none;
+    text-align:center;
+    flex-direction:column;
+    align-items:center;
+  }
+  .screen.active{display:flex;}
+  @media (prefers-reduced-motion: no-preference){
+    .screen.active{animation:rise .8s ease both;}
+    @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  }
+  .cover-btn{
+    display:inline-block;
+    border:1px solid var(--gold);
+    color:var(--gold);
+    background:transparent;
+    padding:14px 40px;
+    font-family:'Jost',sans-serif;
+    font-size:.92rem;
+    letter-spacing:.03em;
+    border-radius:2px;
+    cursor:pointer;
+    margin-top:10px;
+    transition:background .35s ease, color .35s ease;
+  }
+  .cover-btn:hover, .cover-btn:focus-visible{
+    background:var(--gold);
+    color:var(--coffee-dark);
+  }
+  .cover-btn:focus-visible{outline:2px solid var(--blush);outline-offset:3px;}
+  .final-msg{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:1.7rem;
+    line-height:1.5;
+    color:var(--cream);
+    max-width:20ch;
+  }
+  .steam{
+    width:1px;
+    height:48px;
+    margin:0 auto 18px;
+    background:linear-gradient(to bottom, transparent, var(--gold) 40%, transparent);
+    opacity:.7;
+  }
+  .eyebrow{
+    font-size:13px;
+    letter-spacing:.04em;
+    color:var(--blush);
+    font-weight:400;
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;
+    font-size:clamp(2.6rem,9vw,3.6rem);
+    line-height:1.05;
+    margin:0 0 22px;
+    color:var(--cream);
+  }
+  .message{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:1.2rem;
+    line-height:1.6;
+    color:#e6d9c8;
+    margin:0 auto 30px;
+    max-width:34ch;
+  }
+  .divider{
+    width:56px;
+    height:1px;
+    background:var(--gold);
+    margin:0 auto 30px;
+    opacity:.6;
+  }
+  .details{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-bottom:34px;
+  }
+  .detail-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:center;
+    gap:10px;
+    font-size:1.05rem;
+  }
+  .detail-label{
+    font-size:.78rem;
+    color:var(--blush);
+    min-width:64px;
+    text-align:right;
+  }
+  .detail-value{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.35rem;
+    color:var(--cream);
+  }
+  .rsvp{
+    display:inline-block;
+    border:1px solid var(--gold);
+    color:var(--gold);
+    background:transparent;
+    padding:12px 34px;
+    font-family:'Jost',sans-serif;
+    font-size:.92rem;
+    letter-spacing:.02em;
+    border-radius:2px;
+    cursor:pointer;
+    transition:background .35s ease, color .35s ease;
+  }
+  .rsvp:hover, .rsvp:focus-visible{
+    background:var(--gold);
+    color:var(--coffee-dark);
+  }
+  .rsvp:focus-visible{outline:2px solid var(--blush);outline-offset:3px;}
+  .confirmed{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:1.1rem;
+    color:var(--blush);
+    margin-top:16px;
+    opacity:0;
+    transition:opacity .5s ease;
+  }
+  .confirmed.show{opacity:1;}
+</style>
+</head>
+<body>
+  <svg class="lilies" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <g id="lily">
+        <path d="M0,0 C-6,-22 -22,-30 -36,-24 C-24,-14 -14,-6 0,0 Z" />
+        <path d="M0,0 C6,-22 22,-30 36,-24 C24,-14 14,-6 0,0 Z" />
+        <path d="M0,0 C-8,-26 -6,-44 0,-58 C6,-44 8,-26 0,0 Z" />
+        <path d="M0,0 C-4,20 -18,30 -34,26 C-22,14 -12,6 0,0 Z" />
+        <path d="M0,0 C4,20 18,30 34,26 C22,14 12,6 0,0 Z" />
+        <circle r="4.5" />
+      </g>
+      <g id="rose">
+        <path d="M0,0 C-10,-4 -12,-14 -4,-18 C2,-21 9,-16 8,-8 C7,-2 2,2 0,0 Z" />
+        <path d="M0,0 C8,3 16,-1 16,-10 C16,-17 9,-21 2,-18 C-3,-16 -4,-9 0,0 Z" />
+        <path d="M0,0 C-6,8 -15,8 -18,0 C-20,-6 -15,-12 -8,-11 C-2,-10 2,-5 0,0 Z" />
+        <path d="M0,0 C-2,-9 3,-15 10,-14 C16,-13 18,-6 13,-1 C9,3 2,3 0,0 Z" />
+        <path d="M0,0 C-14,10 -12,26 0,32 C-6,22 -6,10 0,0 Z" />
+        <path d="M0,32 C-8,36 -14,34 -16,28" />
+        <path d="M0,20 C6,23 10,21 11,17" />
+      </g>
+    </defs>
+    <g fill="none" stroke="#c9a15a" stroke-width="1.1" opacity="0.24">
+      <use href="#lily" transform="translate(40,90) rotate(-12) scale(1.3)"/>
+      <use href="#lily" transform="translate(70,150) rotate(20) scale(0.8)"/>
+      <use href="#lily" transform="translate(355,120) rotate(15) scale(1.1)"/>
+      <use href="#lily" transform="translate(330,60) rotate(-25) scale(0.7)"/>
+      <use href="#lily" transform="translate(30,650) rotate(8) scale(1.2)"/>
+      <use href="#lily" transform="translate(60,720) rotate(-18) scale(0.75)"/>
+      <use href="#lily" transform="translate(365,680) rotate(-10) scale(1.35)"/>
+      <use href="#lily" transform="translate(340,750) rotate(22) scale(0.85)"/>
+      <use href="#lily" transform="translate(20,260) rotate(16) scale(0.6)"/>
+      <use href="#lily" transform="translate(380,300) rotate(-20) scale(0.7)"/>
+      <use href="#lily" transform="translate(45,500) rotate(-8) scale(0.9)"/>
+      <use href="#lily" transform="translate(370,540) rotate(12) scale(0.65)"/>
+    </g>
+    <g fill="none" stroke="#d99a86" stroke-width="1" opacity="0.14">
+      <use href="#lily" transform="translate(200,40) rotate(5) scale(0.9)"/>
+      <use href="#lily" transform="translate(190,770) rotate(-6) scale(0.95)"/>
+      <use href="#lily" transform="translate(15,400) rotate(30) scale(0.65)"/>
+      <use href="#lily" transform="translate(385,420) rotate(-30) scale(0.65)"/>
+    </g>
+    <g fill="none" stroke="#d99a86" stroke-width="1.1" opacity="0.22">
+      <use href="#rose" transform="translate(90,60) rotate(10) scale(1.1)"/>
+      <use href="#rose" transform="translate(320,150) rotate(-15) scale(0.85)"/>
+      <use href="#rose" transform="translate(50,220) rotate(20) scale(0.7)"/>
+      <use href="#rose" transform="translate(360,260) rotate(-8) scale(0.95)"/>
+      <use href="#rose" transform="translate(30,470) rotate(14) scale(0.8)"/>
+      <use href="#rose" transform="translate(375,480) rotate(-18) scale(0.9)"/>
+      <use href="#rose" transform="translate(100,600) rotate(-10) scale(0.75)"/>
+      <use href="#rose" transform="translate(310,640) rotate(16) scale(1.05)"/>
+      <use href="#rose" transform="translate(70,760) rotate(-6) scale(0.9)"/>
+      <use href="#rose" transform="translate(330,730) rotate(12) scale(0.7)"/>
+    </g>
+    <g fill="none" stroke="#c9a15a" stroke-width="0.9" opacity="0.12">
+      <use href="#rose" transform="translate(200,350) rotate(8) scale(0.7)"/>
+      <use href="#rose" transform="translate(210,10) rotate(-12) scale(0.6)"/>
+    </g>
+  </svg>
+  <div class="screens">
+
+    <section class="screen active" id="screen-cover">
+      <div class="steam"></div>
+      <div class="eyebrow">Tenemos una celebracion por cumplir</div>
+      <h1>Mi Cafecito Bello</h1>
+      <button class="cover-btn" id="openBtn">Presiona aquí</button>
+    </section>
+
+    <section class="screen" id="screen-invite">
+      <div class="steam"></div>
+      <div class="eyebrow">Te hago la coordial invitación </div>
+      <h1>Srta Kiara V.</h1>
+      <p class="message">Cada año que cumples es una razón más para celebrarte. Te invito a una cena, para brindar por ti y compartir un momento ameno entre risas y conversaciones.</p>
+      <div class="divider"></div>
+      <div class="details">
+        <div class="detail-row">
+          <span class="detail-label">Cuándo sera</span>
+          <span class="detail-value">Jueves · 19:00 p.m.</span>
+        </div>
+      </div>
+      <button class="rsvp" id="rsvpBtn">Sí, acepto la cita</button>
+    </section>
+
+    <section class="screen" id="screen-confirm">
+      <div class="steam"></div>
+      <p class="final-msg">Nos vemos el Jueves.<br>No faltes Cafecito.</p>
+      <button class="cover-btn" id="restartBtn" style="margin-top:34px;">Volver al inicio</button>
+    </section>
+
+  </div>
+
+  <script>
+    const screens = {
+      cover: document.getElementById('screen-cover'),
+      invite: document.getElementById('screen-invite'),
+      confirm: document.getElementById('screen-confirm')
+    };
+    function goTo(name){
+      Object.values(screens).forEach(s => s.classList.remove('active'));
+      screens[name].classList.add('active');
+    }
+    document.getElementById('openBtn').addEventListener('click', () => goTo('invite'));
+    document.getElementById('rsvpBtn').addEventListener('click', () => goTo('confirm'));
+    document.getElementById('restartBtn').addEventListener('click', () => goTo('cover'));
+  </script>
+</body>
+</html>
